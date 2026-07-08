@@ -21,27 +21,20 @@ const reservations = [
 
 function recettesParConducteur(reservations)
 {
-    const retval = {};
+    let retval = {};
 
     for (let i = 0; i < reservations.length ; i++)
-    {   
-        for(let j = 0; j < reservations.length ; j++)
+    {
+        if (retval[reservations[i].conducteur])
         {
-            for(let k = 0; k < Object.keys(retval).length ; k++)
-            {
-                if (reservations[j].conducteur == retval[j].conducteur)
-                {
-                    retval[j].total += reservations[j].passagers * reservations[j].prixPlace;
-                }
-                break;
-            }
-            break;
+            retval[reservations[i].conducteur].total += reservations[i].passagers * reservations[i].prixPlace;
         }
-        
-        retval[reservations[i].conducteur] = { total : reservations[i].passagers * reservations[i].prixPlace};
+        else
+        {
+            retval[reservations[i].conducteur] = {total : reservations[i].passagers * reservations[i].prixPlace}    
+        }
     }
     return retval;
 }
 
-
-console.log(recettesParConducteur(reservations))
+console.log (recettesParConducteur(reservations));
