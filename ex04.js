@@ -95,7 +95,39 @@ async function recapTrajet(id)
   }
 }
 
-recapTrajet(3).then(console.log);
+
+async function recapTrajet2(id)
+{
+  try 
+  {
+      const [t, p] = await Promise.all(
+        [
+          getTrajet(id),
+          getPassagers(id)
+        ]
+      );
+
+      const retval=  
+        {
+          conducteur : t.conducteur,
+          depart : t.depart,
+          arrivee : t.arrivee,
+          nbPassagers : p.length,
+          recette : p.length * t.prixPlace
+        };
+
+
+      return retval;
+  }
+  catch (all)
+  {
+    return null;
+  }
+}
+
+
+
+recapTrajet2(2).then(console.log);
 
 
 // Tests (décommente quand tu es prêt) :

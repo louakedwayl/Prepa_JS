@@ -1,0 +1,23 @@
+{
+  "name": "prepa_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ex00.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/louakedwayl/Prepa_JS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/louakedwayl/Prepa_JS/issues"
+  },
+  "homepage": "https://github.com/louakedwayl/Prepa_JS#readme",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}
