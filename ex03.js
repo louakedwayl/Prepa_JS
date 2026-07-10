@@ -2,16 +2,13 @@
 // ---------------------------------------------
 //
 // Données de départ :
-
-
-
 //
 // Écris une fonction analyseVentes(ventes)
 //
 // qui retourne un tableau contenant le chiffre d'affaires
 // total de chaque catégorie.
 //
-// Chiffre d'affaires = quantite × prix
+// Chiffre d'affaires = quantite × total
 //
 // Les catégories doivent être créées automatiquement.
 //
@@ -38,19 +35,27 @@ function analyseVentes(ventes)
 {
     let tmp = {};
 
-    for(let i = 0 ; i < ventes.length; i++)
+    for ( let i = 0; i < ventes.length ; i++)
     {
         if (tmp[ventes[i].categorie])
         {
-            tmp[ventes[i].categorie].total += ventes[i].quantite * ventes[i].prix;
+            tmp[ventes[i].categorie] += ventes[i].quantite * ventes[i].prix;
         }
         else
         {
-            tmp[ventes[i].categorie] = {total : ventes[i].quantite * ventes[i].prix}
+            tmp[ventes[i].categorie] = ventes[i].quantite * ventes[i].prix;
         }
     }
-    
-    return tmp;
+    let retval = [];
+
+
+    for (let key in tmp)
+    {
+        retval.push({categorie : key , total : tmp[key]})
+    }
+    retval.sort((a, b )=> {return b.total - a.total})
+
+    return retval;
 }
 
 console.log(analyseVentes(ventes));
