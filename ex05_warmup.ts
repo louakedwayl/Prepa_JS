@@ -27,7 +27,7 @@ let capitale : boolean = true;
 // Quand c'est fait, décommente la ligne suivante et lance npx tsc :
 // tu dois avoir une ERREUR. Lis-la, comprends-la, puis recommente.
 
-habitants = 2100000;
+habitants = 42;
 
 // ------------------------------------------------------------------
 // PARTIE 2 — Annoter une fonction
@@ -41,11 +41,16 @@ habitants = 2100000;
 
 // TON CODE ICI
 
+function prixTotal(price : number, quantity : number) :number
+{
+  return (price * quantity);
+}
+
 console.log(prixTotal(15, 2)); // attendu : 30
 
 // Quand ça marche, décommente, lance npx tsc, lis l'erreur, recommente :
 
-// prixTotal(15, "deux");
+prixTotal(15, 2);
 
 // ------------------------------------------------------------------
 // PARTIE 3 — Décrire un objet avec une interface
@@ -58,11 +63,19 @@ console.log(prixTotal(15, 2)); // attendu : 30
 
 // TON CODE ICI (l'interface)
 
-const monTrajet = { depart: "Paris", arrivee: "Lyon", km: 465 };
+interface Trajet 
+{
+  depart : string;
+  arrivee : string;
+  km : number;
+};
+
+
+const monTrajet : Trajet = { depart: "Paris", arrivee: "Lyon", km: 465 };
 
 // Quand ça compile, décommente, lance npx tsc, lis l'erreur, recommente :
 
-// console.log(monTrajet.kilometres);
+console.log(monTrajet.km);
 
 // ------------------------------------------------------------------
 // PARTIE 4 — Un tableau d'objets + une fonction dessus
@@ -77,13 +90,23 @@ const monTrajet = { depart: "Paris", arrivee: "Lyon", km: 465 };
 //    Elle retourne la somme des km de tous les trajets.
 //    Utilise for...of (comme en JS : let total = 0, on accumule, on retourne).
 
-const trajets = [
+const trajets : Trajet[] = [
   { depart: "Paris", arrivee: "Lyon", km: 465 },
   { depart: "Lyon", arrivee: "Marseille", km: 315 },
   { depart: "Marseille", arrivee: "Nice", km: 200 },
 ];
 
 // TON CODE ICI (la fonction)
+
+function kmTotal(trajets: Trajet[]) : number
+{
+  let retval : number = 0;
+  for (let trajet of trajets)
+  {
+      retval += trajet.km; 
+  }
+  return retval;
+}
 
 console.log(kmTotal(trajets)); // attendu : 980
 
