@@ -37,7 +37,7 @@ function statistiquesClients(commandes)
     {
         if (retval[commandes[i].client])
         {
-            retval[commandes[i].client].article += commandes[i].quantite;
+            retval[commandes[i].client].articles += commandes[i].quantite;
             retval[commandes[i].client].total += commandes[i].quantite * commandes[i].prix;
         }
         else
@@ -45,7 +45,7 @@ function statistiquesClients(commandes)
             retval[commandes[i].client] = 
             {
                 total : commandes[i].quantite * commandes[i].prix,
-                article : commandes[i].quantite
+                articles : commandes[i].quantite
             }
         }
     }

@@ -1,76 +1,120 @@
-// Exercice 6 — Premier exo TypeScript : recettes typées
-// ------------------------------------------------------
+// Échauffement TypeScript — avant l'ex06
+// ----------------------------------------
 //
-// La logique, tu la connais déjà (c'est ton ex02). La nouveauté,
-// c'est le TYPAGE. Ici le compilateur est ton correcteur :
+// 4 mini-parties, dans l'ordre. Après chaque partie :
 //
-//   Vérifier les types :  npx tsc
+//   Vérifier les types :  npx tsc ex05.ts --noEmit
 //   Exécuter :            node ex05.ts
 //
-// npx tsc ne doit rien afficher (= aucune erreur de type).
+// (--noEmit = vérifie sans générer de fichier .js)
 //
-// ------------------------------------------------------------------
-// PARTIE 1 — Décris les données
-// ------------------------------------------------------------------
-//
-// Écris une interface Reservation qui décrit les objets ci-dessous.
-// Contrainte : le champ `statut` ne peut valoir QUE "confirmee"
-// ou "annulee" — pas n'importe quelle string. (Cherche : "union de
-// littéraux" / literal union type.)
-//
-// Puis type le tableau `reservations` avec ton interface.
-
-const reservations = [
-  { trajet: "Paris-Lyon", conducteur: "Alice", passagers: 2, prixPlace: 15, statut: "confirmee" },
-  { trajet: "Paris-Lille", conducteur: "Bob", passagers: 3, prixPlace: 10, statut: "confirmee" },
-  { trajet: "Lyon-Marseille", conducteur: "Alice", passagers: 1, prixPlace: 20, statut: "annulee" },
-  { trajet: "Paris-Rennes", conducteur: "Chloé", passagers: 2, prixPlace: 12, statut: "confirmee" },
-  { trajet: "Lille-Bruxelles", conducteur: "Bob", passagers: 2, prixPlace: 8, statut: "annulee" },
-];
+// Rappel : TS = ton JS habituel + des annotations de type.
+// Une annotation s'écrit  `: letype`  après le nom.
 
 // ------------------------------------------------------------------
-// PARTIE 2 — La fonction
+// PARTIE 1 — Annoter des variables
 // ------------------------------------------------------------------
 //
-// Écris recettesParConducteur avec cette signature EXACTE :
+// Ajoute une annotation de type à chacune des 3 variables ci-dessous
+// (number, string ou boolean — à toi de choisir la bonne).
 //
-//   function recettesParConducteur(reservations: Reservation[]): Record<string, number>
+// Exemple :   let age: number = 25;
+
+let ville : string = "Paris";
+let habitants : number = 2100000;
+let capitale : boolean = true;
+
+// Quand c'est fait, décommente la ligne suivante et lance npx tsc :
+// tu dois avoir une ERREUR. Lis-la, comprends-la, puis recommente.
+
+habitants = 42;
+
+// ------------------------------------------------------------------
+// PARTIE 2 — Annoter une fonction
+// ------------------------------------------------------------------
 //
-// Elle retourne le total gagné par conducteur (passagers × prixPlace),
-// en IGNORANT les réservations annulées.
+// Écris la fonction prixTotal :
+//   - elle prend un prix (number) et une quantite (number)
+//   - elle retourne prix * quantite (donc un number)
 //
-// (Record<string, number> = un objet dont les clés sont des strings
-// et les valeurs des numbers. Cherche ce que c'est si besoin.)
-//
-// Résultat attendu :
-//
-//   { Alice: 30, Bob: 30, Chloé: 24 }
-//
-// Contrainte de style : pas de boucle for indexée. Utilise
-// for...of ou reduce.
+// Annote les DEUX paramètres ET le type de retour.
 
 // TON CODE ICI
 
-function recettesParConducteur(reservations: Reservation[]): Record<string, number>
+function prixTotal(price : number, quantity : number) :number
 {
-  
+  return (price * quantity);
 }
 
+console.log(prixTotal(15, 2)); // attendu : 30
 
-console.log(recettesParConducteur(reservations));
+// Quand ça marche, décommente, lance npx tsc, lis l'erreur, recommente :
+
+prixTotal(15, 2);
 
 // ------------------------------------------------------------------
-// PARTIE 3 — Vois ce que le typage t'apporte
+// PARTIE 3 — Décrire un objet avec une interface
 // ------------------------------------------------------------------
 //
-// Quand tout compile et que le résultat est bon, décommente les
-// lignes ci-dessous UNE PAR UNE et lance `npx tsc` à chaque fois.
-// Lis bien chaque message d'erreur : c'est exactement le genre de
-// bug (comme ton article/articles d'ex03) que TS attrape à ta place.
+// Écris une interface Trajet qui décrit l'objet ci-dessous
+// (3 champs : depart, arrivee, km).
+//
+// Puis annote la constante :   const monTrajet: Trajet = { ... }
 
-// reservations.push({ trajet: "Nice-Toulon", conducteur: "David", passagers: 2, prixPlace: 9, statut: "en attente" });
+// TON CODE ICI (l'interface)
 
-// const r = recettesParConducteur(reservations);
-// console.log(r.Alice.toUpperCase());
+interface Trajet 
+{
+  depart : string;
+  arrivee : string;
+  km : number;
+};
 
-// console.log(reservations[0].pasagers);
+
+const monTrajet : Trajet = { depart: "Paris", arrivee: "Lyon", km: 465 };
+
+// Quand ça compile, décommente, lance npx tsc, lis l'erreur, recommente :
+
+console.log(monTrajet.km);
+
+// ------------------------------------------------------------------
+// PARTIE 4 — Un tableau d'objets + une fonction dessus
+// ------------------------------------------------------------------
+//
+// 1) Annote le tableau ci-dessous avec ton interface : Trajet[]
+//
+// 2) Écris la fonction kmTotal avec cette signature :
+//
+//      function kmTotal(trajets: Trajet[]): number
+//
+//    Elle retourne la somme des km de tous les trajets.
+//    Utilise for...of (comme en JS : let total = 0, on accumule, on retourne).
+
+const trajets : Trajet[] = [
+  { depart: "Paris", arrivee: "Lyon", km: 465 },
+  { depart: "Lyon", arrivee: "Marseille", km: 315 },
+  { depart: "Marseille", arrivee: "Nice", km: 200 },
+];
+
+// TON CODE ICI (la fonction)
+
+function kmTotal(trajets: Trajet[]) : number
+{
+  let retval : number = 0;
+  for (let trajet of trajets)
+  {
+      retval += trajet.km; 
+  }
+  return retval;
+}
+
+console.log(kmTotal(trajets)); // attendu : 980
+
+// ------------------------------------------------------------------
+// Fini ? Alors tu as TOUT pour l'ex06 :
+//   - Partie 3 + 4  =  l'interface Reservation et le tableau Reservation[]
+//   - Partie 2      =  annoter la fonction
+// La seule nouveauté de l'ex06, c'est le type de retour Record<string, number> :
+// un objet dont tu ne connais pas les clés d'avance ({ Alice: 30, Bob: 30, ... }),
+// donc on dit juste "clés = string, valeurs = number".
+// ------------------------------------------------------------------
