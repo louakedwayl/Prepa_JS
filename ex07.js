@@ -1,3 +1,4 @@
+"use strict";
 // Exercice 7 — Recherche et réservation (conditions réelles)
 // -----------------------------------------------------------
 //
@@ -17,29 +18,14 @@
 // ------------------------------------------------------------------
 // DONNÉES
 // ------------------------------------------------------------------
-
-interface Trajet {
-  id : number;
-  conducteur : string;
-  depart : string;
-  arrivee :string;
-  heure : string;
-  prix : number;
-  placesTotal :number;
-  passagers : string[];
-}
-
-
-const trajets : Trajet [] = [
-  { id: 1, conducteur: "Alice", depart: "Nanterre", arrivee: "La Défense", heure: "08:30", prix: 2,   placesTotal: 3, passagers: ["Karim"] },
-  { id: 2, conducteur: "Bob",   depart: "Nanterre", arrivee: "La Défense", heure: "07:45", prix: 1.5, placesTotal: 2, passagers: ["Léa", "Marc"] },
-  { id: 3, conducteur: "Chloé", depart: "Rueil",    arrivee: "La Défense", heure: "08:15", prix: 3,   placesTotal: 3, passagers: [] },
-  { id: 4, conducteur: "David", depart: "Nanterre", arrivee: "La Défense", heure: "07:50", prix: 2,   placesTotal: 4, passagers: ["Nina"] },
-  { id: 5, conducteur: "Emma",  depart: "Nanterre", arrivee: "Rueil",      heure: "09:00", prix: 1.5, placesTotal: 2, passagers: [] },
+Object.defineProperty(exports, "__esModule", { value: true });
+const trajets = [
+    { id: 1, conducteur: "Alice", depart: "Nanterre", arrivee: "La Défense", heure: "08:30", prix: 2, placesTotal: 3, passagers: ["Karim"] },
+    { id: 2, conducteur: "Bob", depart: "Nanterre", arrivee: "La Défense", heure: "07:45", prix: 1.5, placesTotal: 2, passagers: ["Léa", "Marc"] },
+    { id: 3, conducteur: "Chloé", depart: "Rueil", arrivee: "La Défense", heure: "08:15", prix: 3, placesTotal: 3, passagers: [] },
+    { id: 4, conducteur: "David", depart: "Nanterre", arrivee: "La Défense", heure: "07:50", prix: 2, placesTotal: 4, passagers: ["Nina"] },
+    { id: 5, conducteur: "Emma", depart: "Nanterre", arrivee: "Rueil", heure: "09:00", prix: 1.5, placesTotal: 2, passagers: [] },
 ];
-
-
-
 // ------------------------------------------------------------------
 // À FAIRE
 // ------------------------------------------------------------------
@@ -66,94 +52,66 @@ const trajets : Trajet [] = [
 //      contient ne doivent être modifiés — les tests le vérifient.
 //      (Si tu ne connais pas la syntaxe `...` (spread), cherche-la :
 //      c'est LA syntaxe de l'immutabilité, indispensable en React.)
-
 // TON CODE ICI
-
-
-function placesRestantes(trajet: Trajet): number
-{
-  let retval : number = 0; 
-
-  retval = trajet.placesTotal - trajet.passagers.length;
-  return retval;
+function placesRestantes(trajet) {
+    let retval = 0;
+    retval = trajet.placesTotal - trajet.passagers.length;
+    return retval;
 }
-
-function rechercher(trajets: Trajet[], depart: string, arrivee: string): Trajet[]
-{ 
-  let retval : Trajet[]= [];
-
-  for (let trajet of trajets)
-  {
-    if (trajet.depart == depart && trajet.arrivee == arrivee && placesRestantes(trajet) > 0)
-    {
-        retval.push(trajet);
+function rechercher(trajets, depart, arrivee) {
+    let retval = [];
+    for (let trajet of trajets) {
+        if (trajet.depart == depart && trajet.arrivee == arrivee && placesRestantes(trajet) > 0) {
+            retval.push(trajet);
+        }
     }
-  }
-
-
-  retval.sort ((a, b) => {
-    if (a.prix == b.prix)
-    {
-      return a.heure.localeCompare(b.heure);
-    }
-    return a.prix - b.prix ;
-  });
-
-
-
-  return retval;
+    retval.sort((a, b) => {
+        if (a.prix == b.prix) {
+            return a.heure.localeCompare(b.heure);
+        }
+        return a.prix - b.prix;
+    });
+    return retval;
 }
-
- function reserver(trajets: Trajet[], id: number, passager: string): Trajet[]
- {
-
-    let retval : Trajet[] = structuredClone(trajets);
-    let trajet = retval.find((t) => t.id == id)
-      
+function reserver(trajets, id, passager) {
+    let retval = structuredClone(trajets);
+    let trajet = retval.find((t) => t.id == id);
     if (!trajet)
-      throw new Error("Trajet introuvable");
-
+        throw new Error("Trajet introuvable");
     if (placesRestantes(trajet) == 0)
-      throw new Error("Trajet complet")
-
+        throw new Error("Trajet complet");
     trajet.passagers.push(passager);
     return retval;
- }
-
-
+}
 // ------------------------------------------------------------------
 // TESTS (fournis — ne pas modifier)
 // ------------------------------------------------------------------
-
-for (const t of trajets) console.log(t.id, placesRestantes(t));
+for (const t of trajets)
+    console.log(t.id, placesRestantes(t));
 // attendu : 1 2 / 2 0 / 3 3 / 4 3 / 5 2
-
 console.log(rechercher(trajets, "Nanterre", "La Défense").map((t) => t.id));
 // // attendu : [ 4, 1 ]   (le 2 est complet ; à 2 €, le 4 part avant le 1)
-
 console.log(rechercher(trajets, "Paris", "Lyon"));
 // // attendu : []
-
 console.log(trajets.map((t) => t.id));
 // // attendu : [ 1, 2, 3, 4, 5 ]   (rechercher n'a pas réordonné l'original)
-
 const apres = reserver(trajets, 3, "Wayl");
 console.log(apres.find((t) => t.id === 3)?.passagers);
 // // attendu : [ 'Wayl' ]
-
 console.log(trajets.find((t) => t.id === 3)?.passagers);
 // // attendu : []   (l'original n'a PAS bougé)
-
 try {
-  reserver(trajets, 2, "Wayl");
-} catch (e) {
-  console.log(String(e));
+    reserver(trajets, 2, "Wayl");
+}
+catch (e) {
+    console.log(String(e));
 }
 // // attendu : Error: Trajet complet
-
 try {
-  reserver(trajets, 99, "Wayl");
-} catch (e) {
-  console.log(String(e));
+    reserver(trajets, 99, "Wayl");
+}
+catch (e) {
+    console.log(String(e));
 }
 // attendu : Error: Trajet introuvable
+//# sourceMappingURL=ex07.js.map
